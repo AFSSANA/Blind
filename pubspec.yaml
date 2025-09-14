@@ -7,12 +7,13 @@ version: 1.0.0+1
 environment:
   sdk: ^3.9.2
 
-ddependencies:
+dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.8
-  flutter_tts: ^3.3.8
-  geolocator: ^10.1.0  # 🗺️ Added for GPS location access # 🔊 Added for voice feedback
+  flutter_tts: ^4.2.3         # 🔊 For voice output
+  geolocator: ^14.0.2         # 🗺️ For GPS location access
+        
 
 dev_dependencies:
   flutter_test:
@@ -21,6 +22,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-dependencies:
-  flutter_tts: ^4.2.3
-  geolocator: ^14.0.2
