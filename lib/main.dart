@@ -118,18 +118,33 @@ class _VoiceHomeState extends State<VoiceHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text("Blind Nav")),
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: getLocationAndSpeak,
-              child: Text("Speak Current Location"),
+              child: Text(
+                "Speak Current Location",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                minimumSize: Size(double.infinity, 60),
+              ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             ElevatedButton(
               onPressed: isAutoUpdating ? stopAutoUpdate : startAutoUpdate,
-              child: Text(isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates"),
+              child: Text(
+                isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates",
+                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+              ),
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                minimumSize: Size(double.infinity, 60),
+              ),
             ),
           ],
         ),
