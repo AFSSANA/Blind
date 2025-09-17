@@ -89,7 +89,7 @@ class _VoiceHomeState extends State<VoiceHome> {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
         String locationText =
-            "You are near ${place.street}, ${place.locality}, ${place.administrativeArea}";
+        "You are near ${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
         print("Reverse geocoded location: $locationText");
         speak(locationText);
       } else {
@@ -100,6 +100,7 @@ class _VoiceHomeState extends State<VoiceHome> {
       speak("Failed to get location. Please check your settings.");
     }
   }
+  
 
   void startAutoUpdate() {
     speak("Auto location updates started.");
