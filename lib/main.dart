@@ -1,4 +1,4 @@
-import 'dart:async'; // ✅ Added for Timer
+import 'dart:async';
 import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
@@ -11,7 +11,19 @@ class BlindNavApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Blind Nav',
-      theme: ThemeData(primarySwatch: Colors.indigo),
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: Color(0xFF0D1B2A),
+        primaryColor: Colors.indigo,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.indigoAccent,
+            foregroundColor: Colors.white,
+            textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            minimumSize: Size(double.infinity, 60),
+          ),
+        ),
+      ),
       home: VoiceHome(),
     );
   }
@@ -117,34 +129,41 @@ class _VoiceHomeState extends State<VoiceHome> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Blind Nav")),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 48.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // 🔷 Icon instead of Logo
+            Icon(
+              Icons.visibility,
+              size: 100,
+              color: Colors.indigoAccent,
+            ),
+            SizedBox(height: 24),
+
+            Text(
+              "BLIND NAV",
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+            ),
+            SizedBox(height: 48),
+
             ElevatedButton(
               onPressed: getLocationAndSpeak,
-              child: Text(
-                "Speak Current Location",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                minimumSize: Size(double.infinity, 60),
-              ),
+              child: Text("Speak Current Location"),
             ),
-            SizedBox(height: 30),
+            SizedBox(height: 24),
+
             ElevatedButton(
               onPressed: isAutoUpdating ? stopAutoUpdate : startAutoUpdate,
-              child: Text(
-                isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates",
-                style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-              ),
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                minimumSize: Size(double.infinity, 60),
-              ),
+              child: Text(isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates"),
+            ),
+            SizedBox(height: 48),
+
+            Text(
+              "Ensure GPS is enabled for accurate location.",
+              style: TextStyle(color: Colors.white54, fontSize: 14),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
