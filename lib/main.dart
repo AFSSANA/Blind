@@ -42,7 +42,9 @@ class _VoiceHomeState extends State<VoiceHome> {
   @override
   void initState() {
     super.initState();
-    speak("Welcome to Blind Nav");
+    Future.delayed(Duration(seconds: 1), () {
+      speak("Welcome to Blind Nav. Tap the button to hear your current location or enable auto updates.");
+    });
   }
 
   Future<void> speak(String message) async {
@@ -79,8 +81,6 @@ class _VoiceHomeState extends State<VoiceHome> {
         desiredAccuracy: LocationAccuracy.high,
       );
 
-      print("Latitude: ${position.latitude}, Longitude: ${position.longitude}");
-
       List<Placemark> placemarks = await placemarkFromCoordinates(
         position.latitude,
         position.longitude,
@@ -89,18 +89,15 @@ class _VoiceHomeState extends State<VoiceHome> {
       if (placemarks.isNotEmpty) {
         Placemark place = placemarks.first;
         String locationText =
-        "You are near ${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
-        print("Reverse geocoded location: $locationText");
+            "You are near ${place.name}, ${place.street}, ${place.subLocality}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}";
         speak(locationText);
       } else {
         speak("Location found, but address details are unavailable.");
       }
     } catch (e) {
-      print("Location error: $e");
       speak("Failed to get location. Please check your settings.");
     }
   }
-  
 
   void startAutoUpdate() {
     speak("Auto location updates started.");
@@ -135,7 +132,6 @@ class _VoiceHomeState extends State<VoiceHome> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 🔷 Icon instead of Logo
             Icon(
               Icons.visibility,
               size: 100,
@@ -158,6 +154,12 @@ class _VoiceHomeState extends State<VoiceHome> {
             ElevatedButton(
               onPressed: isAutoUpdating ? stopAutoUpdate : startAutoUpdate,
               child: Text(isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates"),
+            ),
+            SizedBox(height: 24),
+
+            Text(
+              isAutoUpdating ? "Auto updates are ON" : "Auto updates are OFF",
+              style: TextStyle(color: Colors.white70),
             ),
             SizedBox(height: 48),
 
