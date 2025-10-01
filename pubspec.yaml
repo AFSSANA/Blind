@@ -13,13 +13,19 @@ dependencies:
   cupertino_icons: ^1.0.8
   flutter_tts: ^4.2.3         # 🔊 For voice output
   geolocator: ^14.0.2         # 🗺️ For GPS location access
-  geocoding: ^2.0.5          # to get exact location(not saying longitude and latitude)
-        
+  geocoding: ^4.0.0          # to get exact location(not saying longitude and latitude)
+  camera: ^0.11.2
+  path_provider: ^2.0.11
+  google_mlkit_image_labeling: ^0.14.1
+  flutter_sound: ^9.2.13
+  loading_animation_widget: ^1.2.0
+  http: ^1.2.0
+  permission_handler: ^11.0.1     
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   uses-material-design: true

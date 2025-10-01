@@ -1,10 +1,20 @@
 import 'dart:async';
-import 'package:geocoding/geocoding.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:camera/camera.dart';
+import 'object_detection_screen.dart';
+import 'splash_screen.dart';
+import 'speech_to_text.dart'; // ✅ Voice command screen
 
-void main() => runApp(BlindNavApp());
+late List<CameraDescription> cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
+  runApp(BlindNavApp());
+}
 
 class BlindNavApp extends StatelessWidget {
   @override
@@ -12,15 +22,15 @@ class BlindNavApp extends StatelessWidget {
     return MaterialApp(
       title: 'Blind Nav',
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Color(0xFF0D1B2A),
+        scaffoldBackgroundColor: const Color(0xFF0D1B2A),
         primaryColor: Colors.indigo,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.indigoAccent,
             foregroundColor: Colors.white,
-            textStyle: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-            minimumSize: Size(double.infinity, 60),
+            textStyle: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+            minimumSize: const Size(double.infinity, 60),
           ),
         ),
       ),
@@ -42,7 +52,7 @@ class _VoiceHomeState extends State<VoiceHome> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration(seconds: 1), () {
+    Future.delayed(const Duration(seconds: 1), () {
       speak("Welcome to Blind Nav. Tap the button to hear your current location or enable auto updates.");
     });
   }
@@ -101,7 +111,7 @@ class _VoiceHomeState extends State<VoiceHome> {
 
   void startAutoUpdate() {
     speak("Auto location updates started.");
-    locationTimer = Timer.periodic(Duration(seconds: 10), (timer) {
+    locationTimer = Timer.periodic(const Duration(seconds: 10), (timer) {
       getLocationAndSpeak();
     });
     setState(() {
@@ -132,38 +142,57 @@ class _VoiceHomeState extends State<VoiceHome> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.visibility,
               size: 100,
               color: Colors.indigoAccent,
             ),
-            SizedBox(height: 24),
-
-            Text(
+            const SizedBox(height: 24),
+            const Text(
               "BLIND NAV",
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 48),
-
+            const SizedBox(height: 48),
             ElevatedButton(
               onPressed: getLocationAndSpeak,
-              child: Text("Speak Current Location"),
+              child: const Text("Speak Current Location"),
             ),
-            SizedBox(height: 24),
-
+            const SizedBox(height: 24),
             ElevatedButton(
               onPressed: isAutoUpdating ? stopAutoUpdate : startAutoUpdate,
               child: Text(isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates"),
             ),
-            SizedBox(height: 24),
-
+            const SizedBox(height: 24),
             Text(
               isAutoUpdating ? "Auto updates are ON" : "Auto updates are OFF",
-              style: TextStyle(color: Colors.white70),
+              style: const TextStyle(color: Colors.white70),
             ),
-            SizedBox(height: 48),
-
-            Text(
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ObjectDetectionScreen(cameras: cameras),
+                  ),
+                );
+              },
+              child: const Text("Start Object Detection"),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SpeakToTextPage(), // ✅ Voice command screen
+                  ),
+                );
+              },
+              child: const Text("Voice Command"),
+            ),
+            const SizedBox(height: 48),
+            const Text(
               "Ensure GPS is enabled for accurate location.",
               style: TextStyle(color: Colors.white54, fontSize: 14),
               textAlign: TextAlign.center,
