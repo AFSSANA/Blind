@@ -5,28 +5,37 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.9.2
+  sdk: '>=3.9.2 <4.0.0' # Corrected SDK format
+
+# pubspec.yaml
+
+# pubspec.yaml
 
 dependencies:
   flutter:
     sdk: flutter
+  # Your existing core packages (mostly fine):
   cupertino_icons: ^1.0.8
-  flutter_tts: ^4.2.3         # 🔊 For voice output
-  geolocator: ^14.0.2         # 🗺️ For GPS location access
-  geocoding: ^4.0.0          # to get exact location(not saying longitude and latitude)
+  flutter_tts: ^4.2.3
+  geolocator: ^14.0.2
+  geocoding: ^4.0.0
   camera: ^0.11.2
   path_provider: ^2.0.11
   google_mlkit_image_labeling: ^0.14.1
   flutter_sound: ^9.2.13
   loading_animation_widget: ^1.2.0
   http: ^1.2.0
-  permission_handler: ^11.0.1     
+  permission_handler: ^11.0.1
+  
+  # 📢 FIX: Official, Null-Safe package for Shake Detection (Accelerometer)
+  sensors_plus: ^5.0.1 
+  
+  # ❌ REMOVED: hardware_buttons and volume_watcher (null-safety conflicts)
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^6.0.0
+  flutter_lints: ^6.0.0 # Note: latest is typically ^3.0.0, but using your provided version
 
 flutter:
   uses-material-design: true
-  

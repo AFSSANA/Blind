@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/services.dart'; // 📢 NEW: Import for HapticFeedback
 
 class ObjectDetectionScreen extends StatefulWidget {
   final List<CameraDescription> cameras;
@@ -42,22 +43,35 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
   }
 
   void _initializeMLKit() {
+    // Note: The default ML Kit model is generic. For better obstacle detection,
+    // a custom model (like a TensorFlow model for coco objects) would be better.
     final options = ImageLabelerOptions(confidenceThreshold: 0.5);
     _imageLabeler = ImageLabeler(options: options);
   }
 
   Future<void> _processImage() async {
     try {
+      // 1. Take Picture
       final XFile picture = await _cameraController.takePicture();
       final inputImage = InputImage.fromFilePath(picture.path);
+      
+      // 2. Process Image
       final List<ImageLabel> labels = await _imageLabeler.processImage(inputImage);
 
+      // 3. Check for Detection and Trigger Haptics
+      if (labels.isNotEmpty) {
+        // 📢 NEW: If any object is detected, trigger a vibration alert.
+        // HapticFeedback.vibrate() is a general, strong vibration.
+        HapticFeedback.vibrate();
+      }
+
+      // 4. Format Results for UI
       String detectedObjects = labels.isNotEmpty
           ? labels.map((label) {
-              final labelText = label.label ?? "Unknown";
-              final confidence = (label.confidence * 100).toStringAsFixed(2);
-              return "$labelText - $confidence%";
-            }).join("\n")
+                final labelText = label.label ?? "Unknown";
+                final confidence = (label.confidence * 100).toStringAsFixed(2);
+                return "$labelText - $confidence%";
+              }).join("\n")
           : "No object detected";
 
       setState(() {
@@ -132,6 +146,11 @@ class _ObjectDetectionScreenState extends State<ObjectDetectionScreen> {
                   onPressed: _processImage,
                   child: const Text("Detect Objects"),
                 ),
+                const SizedBox(height: 8),
+                const Text(
+                  "Warning: App vibrates if an object is detected.", 
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                )
               ],
             ),
           ),
