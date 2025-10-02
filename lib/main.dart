@@ -158,23 +158,7 @@ class _VoiceHomeState extends State<VoiceHome> {
                   style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 48),
-                // Button 1: Speak Current Location
-                ElevatedButton(
-                  onPressed: _locationService.getLocationAndSpeak,
-                  child: const Text("Speak Current Location"),
-                ),
-                const SizedBox(height: 24),
-                // Button 2: Start/Stop Auto Updates
-                ElevatedButton(
-                  onPressed: () => _locationService.toggleAutoUpdates(isAutoUpdating),
-                  child: Text(isAutoUpdating ? "Stop Auto Updates" : "Start Auto Updates"),
-                ),
-                const SizedBox(height: 24),
-                Text(
-                  isAutoUpdating ? "Auto updates are ON" : "Auto updates are OFF",
-                  style: const TextStyle(color: Colors.white70),
-                ),
-                const SizedBox(height: 24),
+                
                 // Button 3: Start Object Detection
                 ElevatedButton(
                   onPressed: () {
@@ -189,7 +173,7 @@ class _VoiceHomeState extends State<VoiceHome> {
                       ),
                     );
                   },
-                  child: const Text("Start Object Detection (Auto-Updates Start)"),
+                  child: const Text("Enable Object Detection "),
                 ),
                 // The old "Voice Command" button is now implicitly removed, and the overflow is fixed.
                 
